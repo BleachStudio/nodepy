@@ -12,6 +12,11 @@ WORKDIR     /home/container
 
 STOPSIGNAL SIGINT
 
+FROM        --platform=$TARGETOS/$TARGETARCH python:3.12-slim-bookworm
+
+RUN         apt update \
+            && apt -y install git gcc g++ ca-certificates dnsutils curl iproute2 ffmpeg procps tini
+
 COPY        --chown=container:container ./../entrypoint.sh /entrypoint.sh
 RUN         chmod +x /entrypoint.sh
 ENTRYPOINT    ["/usr/bin/tini", "-g", "--"]
